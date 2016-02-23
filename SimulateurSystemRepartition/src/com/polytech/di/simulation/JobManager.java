@@ -1,7 +1,6 @@
 package com.polytech.di.simulation;
 
-import java.util.Collections;
-import java.util.Comparator;
+
 import java.util.LinkedList;
 
 import com.polytech.di.modele.Job;

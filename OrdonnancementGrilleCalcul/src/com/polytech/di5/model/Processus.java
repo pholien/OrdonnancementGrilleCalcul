@@ -1,20 +1,17 @@
 package com.polytech.di5.model;
 
-import java.util.ArrayList;
 
 public class Processus {
 	private int idProcessus;
 	private int nbCPU;
 	private int nbRAM;
 	private int duree;
-	public ArrayList<Cost> adjProcessus;
 
 	public Processus(int id, int nbC, int nbR, int duree) {
 		this.idProcessus = id;
 		this.nbCPU = nbC;
 		this.nbRAM = nbR;
 		this.duree = duree;
-		adjProcessus = new ArrayList<Cost>();
 	}
 
 	public Processus(Processus p){

@@ -4,16 +4,25 @@ import java.util.ArrayList;
 
 public class Job {
 	private int idJob;
+	private int nbProcessus;
 	public ArrayList<Processus> listProcessus;
-	public ArrayList<Processus> listOrdo;
+	public int[][] adjProcessus;
 	private boolean memoryDistribued;
 	
-	public Job(int id,boolean type){
+	public Job(int id,boolean type,int nb){
 		this.idJob=id;
+		this.setNbProcessus(nb);
 		this.memoryDistribued=type;
 		listProcessus=new ArrayList<Processus>();
-		listOrdo=new ArrayList<Processus>();
+		adjProcessus=new int[nb][nb];
+		for(int i=0;i<nb;i++){
+			for(int j=0;j<nb;j++){
+				adjProcessus[i][j]=0;
+			}
+		}
+		
 	}
+	
 	public int getIdJob() {
 		return idJob;
 	}
@@ -26,9 +35,18 @@ public class Job {
 	public void setMemoryDistribued(boolean memoryDistribued) {
 		this.memoryDistribued = memoryDistribued;
 	}
-	
-	public void ajouterProcessus(Processus p){
-		this.listProcessus.add(p);
+	public void addProcessus(Processus p){
+		listProcessus.add(p);
 	}
+
+	public int getNbProcessus() {
+		return nbProcessus;
+	}
+
+	public void setNbProcessus(int nbProcessus) {
+		this.nbProcessus = nbProcessus;
+	}
+	
+	
 
 }
