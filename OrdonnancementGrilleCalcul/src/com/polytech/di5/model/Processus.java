@@ -7,12 +7,14 @@ public class Processus {
 	private int nbRAM;
 	private int duree;
 	private int fin;
+	private int valueRang;
 
 	public Processus(int id, int nbC, int nbR, int duree) {
 		this.idProcessus = id;
 		this.nbCPU = nbC;
 		this.nbRAM = nbR;
 		this.duree = duree;
+		this.fin=0;
 	}
 
 	public Processus(Processus p){
@@ -69,6 +71,14 @@ public class Processus {
 
 	public void setFin(int fin) {
 		this.fin = fin;
+	}
+
+	public int getValueRang() {
+		return valueRang;
+	}
+
+	public void setValueRang(int valueRang) {
+		this.valueRang = valueRang;
 	}
 
 }

@@ -5,8 +5,10 @@ public class Scheduler {
 	public static void main(String[] args) {
 		AM appManager = new AM();
 		RM ressourceManager = new RM();
-
+		//generer les jobs
 		appManager.GenererJob(5);
+		//pour chaque job, Nous sort les Processus par le valeur rang
+		appManager.SortJobOnRang();
 
 		ressourceManager.AddGrille(3);
 

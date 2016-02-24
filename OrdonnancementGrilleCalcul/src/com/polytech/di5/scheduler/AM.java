@@ -13,6 +13,12 @@ public class AM {
 	public AM() {
 		listJob = new ArrayList<Job>();
 	}
+	
+	public void SortJobOnRang(){
+		for(int i=0;i<listJob.size();i++){
+			listJob.get(i).sortListeProcessus();;
+		}
+	}
 
 	public void GenererJob(int nbJob) {
 
@@ -76,7 +82,7 @@ public class AM {
 				}
 				for (int j = 0; j < tmpList.size(); j++) {
 					int nbAdjSucc = (int) Math.round(Math.random()
-							* (nbAdj - 1) + 1);
+							* (nbAdj - 1));
 					for (int k = 0; k < nbAdjSucc; k++) {
 						int nodeSuccTmp = (int) Math.round(Math.random()
 								* (nbAdj - 1) + tmpList.get(tmpList.size() - 1)
@@ -92,6 +98,23 @@ public class AM {
 				job.adjProcessus[j][nbProcessus - 1] = (int) Math
 						.round(Math.random() * 5 + 5);
 			}
+			//obtenir le valeur rang pour chaque processus
+			Processus tmpProcessus=job.listProcessus.get(job.listProcessus.size()-1);
+			tmpProcessus.setValueRang(tmpProcessus.getDuree());
+			for(int j=job.listProcessus.size()-2;j>=0;j--){
+				tmpProcessus=job.listProcessus.get(j);
+				int tmpValueRang=0;
+				for(int k=0;k<job.listProcessus.size()-1;k++){
+					if(job.adjProcessus[j][k]!=0){
+						
+						if(tmpValueRang<job.listProcessus.get(j).getDuree()+job.adjProcessus[j][k]+job.listProcessus.get(k).getValueRang()){
+							tmpValueRang=job.listProcessus.get(j).getDuree()+job.adjProcessus[j][k]+job.listProcessus.get(k).getValueRang();
+						}
+					}
+				}
+				tmpProcessus.setValueRang(tmpValueRang);
+			}
+			
 
 			this.listJob.add(job);
 

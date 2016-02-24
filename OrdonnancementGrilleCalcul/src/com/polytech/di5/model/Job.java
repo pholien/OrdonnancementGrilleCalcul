@@ -1,6 +1,9 @@
 package com.polytech.di5.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 
 public class Job {
 	private int idJob;
@@ -22,6 +25,28 @@ public class Job {
 			}
 		}
 		
+	}
+	
+	public void sortListeProcessus(){
+		Comparator<Processus> comparator = new Comparator<Processus>(){  
+			   public int compare(Processus s1, Processus s2) {  
+			    //sort par valeur rang
+			    if(s1.getValueRang()!=s2.getValueRang()){  
+			     return s2.getValueRang()-s1.getValueRang();  
+			    }  
+			    else{  
+			     //les valeurs rang sont paraill, sort part spt
+			     if(s1.getDuree()!=s2.getDuree()){  
+			      return s1.getDuree()-s2.getDuree();  
+			     }  
+			     else{  
+			       //sort par id;
+			      return s1.getIdProcessus()-s2.getIdProcessus();  
+			     }  
+			    }  
+			   }  
+			  };  
+		Collections.sort(this.listProcessus, comparator);
 	}
 	
 	public int getIdJob() {
@@ -56,6 +81,25 @@ public class Job {
 		this.finJob = finJob;
 	}
 	
-	
+	class SortbyRang implements Comparator{
 
+		@Override
+		public int compare(Object o1, Object o2) {
+			Processus p1=(Processus)o1;
+			Processus p2=(Processus)o2;
+			int idP1,idP2;
+			int rangP1,RangP2;
+			for(int i=0;i<listProcessus.size();i++){
+				if(p1.getIdProcessus()==listProcessus.get(i).getIdProcessus()){
+					idP1=i;
+				}
+				if(p2.getIdProcessus()==listProcessus.get(i).getIdProcessus()){
+					idP2=i;
+				}
+			}
+			
+			
+			return 0;
+		}
+	}
 }
