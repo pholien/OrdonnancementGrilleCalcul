@@ -34,9 +34,38 @@ public class RM {
 			
 		}
 	}
-	
-	public void ordonnacerUnJob(Job job){
+	/**
+	 * chercher un grille pour executer le job selon FAM
+	 * */
+	public int ordonnacerUnJob(Job job){
+		int firstTimeGrille=Integer.MAX_VALUE;
+		int idGrille=0;
+		int tmpFirstTime=0;
+		for(int i=0;i<listGrille.size();i++){
+			tmpFirstTime=listGrille.get(i).firstStartTimeOnGrid(0, job.listProcessus.get(0));
+			if(tmpFirstTime<firstTimeGrille){
+				firstTimeGrille=tmpFirstTime;
+				idGrille=i;
+			}
+		}
+		return idGrille;
+	}
+	public void affecterUnJob(int idGrille, Job job) {
 		
+		
+		listGrille.get(idGrille).affecterRessourceOnGrid(job);;
+		
+	}
+	
+	public int checkCMAXOnGrid(){
+		int CMax=0;
+		for(int i=0;i<listGrille.size();i++){
+			if(CMax<listGrille.get(i).checkCMax()){
+				CMax=listGrille.get(i).checkCMax();
+			}
+		}
+		return CMax;
+			
 	}
 
 }

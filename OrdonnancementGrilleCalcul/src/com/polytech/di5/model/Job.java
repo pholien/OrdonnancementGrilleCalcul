@@ -8,6 +8,7 @@ public class Job {
 	public ArrayList<Processus> listProcessus;
 	public int[][] adjProcessus;
 	private boolean memoryDistribued;
+	private int finJob;
 	
 	public Job(int id,boolean type,int nb){
 		this.idJob=id;
@@ -45,6 +46,14 @@ public class Job {
 
 	public void setNbProcessus(int nbProcessus) {
 		this.nbProcessus = nbProcessus;
+	}
+
+	public int getFinJob() {
+		return finJob;
+	}
+
+	public void setFinJob(int finJob) {
+		this.finJob = finJob;
 	}
 	
 	

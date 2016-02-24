@@ -6,6 +6,7 @@ public class Processus {
 	private int nbCPU;
 	private int nbRAM;
 	private int duree;
+	private int fin;
 
 	public Processus(int id, int nbC, int nbR, int duree) {
 		this.idProcessus = id;
@@ -60,6 +61,14 @@ public class Processus {
 
 	public void setDuree(int duree) {
 		this.duree = duree;
+	}
+
+	public int getFin() {
+		return fin;
+	}
+
+	public void setFin(int fin) {
+		this.fin = fin;
 	}
 
 }
