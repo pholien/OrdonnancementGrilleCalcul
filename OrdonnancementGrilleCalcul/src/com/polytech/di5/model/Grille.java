@@ -8,8 +8,8 @@ public class Grille {
 	public ArrayList<Node> listNode;
 	
 	public Grille(int id, int nbM){
-		this.idGrille=id;
-		this.nbMachine=nbM;
+		this.setIdGrille(id);
+		this.setNbMachine(nbM);
 		listNode=new ArrayList<Node>();
 	}
 	
@@ -37,25 +37,40 @@ public class Grille {
 		int start=0;
 		for(int i=0;i<job.getNbProcessus();i++){
 			//trouver le temps plus tot pour executer le processus
+			int idProcessus=job.listProcessusOrdonne.get(i).getIdProcessus();
 			for(int j=0;j<i;j++){
 				if(job.adjProcessus[j][i]!=0){
-					if(start<job.listProcessus.get(i).getFin()+job.adjProcessus[j][i]){
-						start=job.listProcessus.get(i).getFin()+job.adjProcessus[j][i]+1;
+					if(start<job.listProcessus.get(idProcessus).getFin()+job.adjProcessus[j][idProcessus]){
+						start=job.listProcessus.get(idProcessus).getFin()+job.adjProcessus[j][idProcessus]+1;
 					}
 				}
 			}
 			
 			//trouver une machine FAM pour executer processus p
 			for(int j=0;j<listNode.size();j++){
-				tmpTime=listNode.get(j).fisrtStartTime(start, job.listProcessus.get(i));
+				tmpTime=listNode.get(j).fisrtStartTime(start, job.listProcessus.get(idProcessus));
 				if(tmpTime<firstTimeMachine){
 					firstTimeMachine=tmpTime;
 					idNode=j;
 				}				
 			}
+			//si les procedent de job i est 1 processus, de plus, ils s'executent sur meme machine
+			/*int nbProc=0;
+			int tmpIdNode=0;
+			int dureePrec=0;
+			for(int j=0;j<job.getNbProcessus();j++){
+				if(job.adjProcessus[j][i]!=0){
+					nbProc++;
+					tmpIdNode=job.listProcessus.get(j).getIdMachine();
+					dureePrec=job.listProcessus.get(j).getDuree();
+				}
+			}
+			if(nbProc==1 && tmpIdNode==idNode){
+				start-=dureePrec;
+			}*/
 			//affecter
-			
-			listNode.get(idNode).affectationRessources(start, job.listProcessus.get(i));
+			job.listProcessus.get(idProcessus).setIdMachine(idNode);
+			listNode.get(idNode).affectationRessources(start, job.listProcessus.get(idProcessus));
 			
 		}
 		
@@ -70,6 +85,22 @@ public class Grille {
 		}
 		return CMax;
 			
+	}
+
+	public int getIdGrille() {
+		return idGrille;
+	}
+
+	public void setIdGrille(int idGrille) {
+		this.idGrille = idGrille;
+	}
+
+	public int getNbMachine() {
+		return nbMachine;
+	}
+
+	public void setNbMachine(int nbMachine) {
+		this.nbMachine = nbMachine;
 	}
 
 }

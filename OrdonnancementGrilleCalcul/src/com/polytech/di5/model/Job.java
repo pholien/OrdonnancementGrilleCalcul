@@ -9,6 +9,7 @@ public class Job {
 	private int idJob;
 	private int nbProcessus;
 	public ArrayList<Processus> listProcessus;
+	public ArrayList<Processus> listProcessusOrdonne;
 	public int[][] adjProcessus;
 	private boolean memoryDistribued;
 	private int finJob;
@@ -18,6 +19,7 @@ public class Job {
 		this.setNbProcessus(nb);
 		this.memoryDistribued=type;
 		listProcessus=new ArrayList<Processus>();
+		listProcessusOrdonne=new ArrayList<Processus>();
 		adjProcessus=new int[nb][nb];
 		for(int i=0;i<nb;i++){
 			for(int j=0;j<nb;j++){
@@ -28,6 +30,12 @@ public class Job {
 	}
 	
 	public void sortListeProcessus(){
+		
+		for(int i=0;i<nbProcessus;i++){
+			Processus p=new Processus(listProcessus.get(i));
+			listProcessusOrdonne.add(p);
+		}
+		
 		Comparator<Processus> comparator = new Comparator<Processus>(){  
 			   public int compare(Processus s1, Processus s2) {  
 			    //sort par valeur rang
@@ -46,7 +54,7 @@ public class Job {
 			    }  
 			   }  
 			  };  
-		Collections.sort(this.listProcessus, comparator);
+		Collections.sort(this.listProcessusOrdonne, comparator);
 	}
 	
 	public int getIdJob() {

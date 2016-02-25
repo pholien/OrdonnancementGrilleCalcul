@@ -42,7 +42,7 @@ public class RM {
 		int idGrille=0;
 		int tmpFirstTime=0;
 		for(int i=0;i<listGrille.size();i++){
-			tmpFirstTime=listGrille.get(i).firstStartTimeOnGrid(0, job.listProcessus.get(0));
+			tmpFirstTime=listGrille.get(i).firstStartTimeOnGrid(0, job.listProcessusOrdonne.get(0));
 			if(tmpFirstTime<firstTimeGrille){
 				firstTimeGrille=tmpFirstTime;
 				idGrille=i;

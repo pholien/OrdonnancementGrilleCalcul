@@ -8,6 +8,7 @@ public class Processus {
 	private int duree;
 	private int fin;
 	private int valueRang;
+	private int idMachine;
 
 	public Processus(int id, int nbC, int nbR, int duree) {
 		this.idProcessus = id;
@@ -22,6 +23,7 @@ public class Processus {
 		this.nbCPU=p.getNbCPU();
 		this.nbRAM=p.getNbRAM();
 		this.duree=p.getDuree();
+		this.fin=p.getFin();
 	}
 	
 	public boolean equals(Object processus)
@@ -79,6 +81,14 @@ public class Processus {
 
 	public void setValueRang(int valueRang) {
 		this.valueRang = valueRang;
+	}
+
+	public int getIdMachine() {
+		return idMachine;
+	}
+
+	public void setIdMachine(int idMachine) {
+		this.idMachine = idMachine;
 	}
 
 }
