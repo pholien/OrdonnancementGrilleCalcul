@@ -11,6 +11,7 @@ public class Job {
 	private int nbReduce;
 	public ArrayList<Processus> listeMap;
 	public ArrayList<Processus> listeReduce;
+	private int idGrille;
 
 	public Job(int id) {
 		this.idJob = id;
@@ -47,6 +48,13 @@ public class Job {
 	public void SortBySPT(){
 		Collections.sort(listeMap,new SPT());
 		Collections.sort(listeReduce,new SPT());
+	}
+	public int getIdGrille() {
+		return idGrille;
+	}
+
+	public void setIdGrille(int idGrille) {
+		this.idGrille = idGrille;
 	}
 	class SPT implements Comparator{
 

@@ -7,6 +7,8 @@ public class Processus {
 	private int nbDD;
 	private boolean isMap;
 	private int duree;
+	private int finProcessus;
+	private int idMachine;
 
 	public Processus(int id, int c, int r, int d, boolean b, int duree) {
 		this.setId(id);
@@ -15,6 +17,7 @@ public class Processus {
 		this.setNbDD(d);
 		this.setMap(b);
 		this.setDuree(duree);
+		this.finProcessus=0;
 	}
 
 	public int getNbCPU() {
@@ -63,6 +66,22 @@ public class Processus {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public int getFinProcessus() {
+		return finProcessus;
+	}
+
+	public void setFinProcessus(int finProcessus) {
+		this.finProcessus = finProcessus;
+	}
+
+	public int getIdMachine() {
+		return idMachine;
+	}
+
+	public void setIdMachine(int idMachine) {
+		this.idMachine = idMachine;
 	}
 
 }

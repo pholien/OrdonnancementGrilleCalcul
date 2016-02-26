@@ -86,7 +86,12 @@ public class Machine {
 				DDRest.add(nbDD-p.getNbDD());
 			}
 		}
+		p.setFinProcessus(fst+p.getDuree());
 		
+	}
+	
+	public int CMAX(){
+		return CPURest.size();
 	}
 
 	public int getIdMachine() {
