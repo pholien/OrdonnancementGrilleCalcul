@@ -7,12 +7,13 @@ import com.polytech.di.modele.Grille;
 import com.polytech.di.modele.Job;
 import com.polytech.di.modele.Machine;
 
-public class RessourceManager implements Runnable{
+public class RessourceManager {
 	public ArrayList<Grille> listGrille;
-	private BlockingQueue<Integer> queue; //file d'attent d'evenement
-
+	//private BlockingQueue<Integer> queue; //file d'attent d'evenement
+	private boolean isRunning =true;
 	public RessourceManager() {
 		listGrille = new ArrayList<Grille>();
+		
 
 	}
 
@@ -79,11 +80,15 @@ public class RessourceManager implements Runnable{
 			
 	}
 
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
+	public boolean isRunning() {
+		return isRunning;
 	}
+
+	public void setRunning(boolean isRunning) {
+		this.isRunning = isRunning;
+	}
+
+
 	
 	
 

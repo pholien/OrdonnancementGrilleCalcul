@@ -2,16 +2,17 @@ package com.polytech.di.simulation;
 
 
 import java.util.LinkedList;
+import java.util.Queue;
 
 import com.polytech.di.modele.Job;
 import com.polytech.di.modele.Processus;
 
 public class JobManager {
-	public LinkedList<Job> listJob;
-
+	public Queue<Job> queueJob;
+	//public Queue<Integer> queue;
 	public JobManager() {
-		listJob = new LinkedList<Job>();
-
+		queueJob = new LinkedList<Job>();
+		
 	}
 
 	public void GenererJob(int n) {
@@ -51,7 +52,7 @@ public class JobManager {
 			job.setNbMap(nbMap);
 			job.setNbReduce(nbReduce);
 			//ajouter le job dans la liste 
-			listJob.add(job);
+			queueJob.add(job);
 		}
 		
 

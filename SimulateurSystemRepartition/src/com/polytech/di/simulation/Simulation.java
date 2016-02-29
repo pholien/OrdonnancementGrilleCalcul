@@ -1,5 +1,9 @@
 package com.polytech.di.simulation;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
+import com.polytech.di.modele.Job;
 import com.polytech.di.modele.Processus;
 
 public class Simulation {
@@ -85,20 +89,50 @@ public class Simulation {
 		 * 5 represente affecter les machines pour executer job dans la grille
 		 * 6 represente liberte les ressources 
 		 * */
+		Queue<Integer> queue=new LinkedList<Integer>();
+		queue.add(1);//D'abord, Il faux ajouter une evenement "job arrive " dans le file d'attente de evenement.
+		
+		
 		JobManager jobManager=new JobManager();
 		RessourceManager ressourceManager=new RessourceManager();
-		
-		jobManager.GenererJob(100);
+		int idGrille=0;
+		Job job=null;
 		ressourceManager.AjouterGrille(3);
+		while(!queue.isEmpty()){
+			int evenement=queue.poll();
+			switch (evenement) {
+			case 1:
+				jobManager.GenererJob(1);
+				queue.add(2);
+				break;
+			case 2:
+				job=jobManager.queueJob.poll();
+				queue.add(3);
+				break;
+			case 3:
+				idGrille = ressourceManager.ordonnacerUnJob(job);
+				job.setIdGrille(idGrille);
+				queue.add(4);
+				break;
+			case 4:
+				ressourceManager.affecterUnJob(idGrille, job);
+				queue.add(1);
+				break;	
+
+			default:
+				
+				break;
+			}
+		}
 		
-		for (int i = 0; i < jobManager.listJob.size(); i++) {
+		/*for (int i = 0; i < jobManager.listJob.size(); i++) {
 			int idGrille = 0;
 			// chercher un grille pour executer le job
 			idGrille = ressourceManager.ordonnacerUnJob(jobManager.listJob.get(i));
 			jobManager.listJob.get(i).setIdGrille(idGrille);
 			//affecter les ressources
 			ressourceManager.affecterUnJob(idGrille, jobManager.listJob.get(i));
-		}
+		}*/
 		System.out.println(ressourceManager.checkCMAXOnGrid());
 	}
 
