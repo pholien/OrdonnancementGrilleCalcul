@@ -12,6 +12,15 @@ public class Machine {
 	public ArrayList<Integer> CPURest;
 	public ArrayList<Integer> RAMRest;
 	public ArrayList<Integer> DDRest;
+	
+	
+	public int getNbCPU() {
+		return nbCPU;
+	}
+
+	public void setNbCPU(int nbCPU) {
+		this.nbCPU = nbCPU;
+	}
 	public Machine(int id, int c, int r, int d) {
 		this.setIdMachine(id);
 		this.nbCPU = c;

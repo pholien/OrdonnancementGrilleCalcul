@@ -12,6 +12,7 @@ public class Job {
 	public ArrayList<Processus> listeMap;
 	public ArrayList<Processus> listeReduce;
 	private int idGrille;
+	private int debut;
 
 	public Job(int id) {
 		this.idJob = id;
@@ -55,6 +56,13 @@ public class Job {
 
 	public void setIdGrille(int idGrille) {
 		this.idGrille = idGrille;
+	}
+	public int getDebut() {
+		return debut;
+	}
+
+	public void setDebut(int debut) {
+		this.debut = debut;
 	}
 	class SPT implements Comparator{
 

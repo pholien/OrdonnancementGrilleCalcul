@@ -89,7 +89,7 @@ public class Simulation {
 		 * 5 represente affecter les machines pour executer job dans la grille
 		 * 6 represente liberte les ressources 
 		 * */
-		Queue<Integer> queue=new LinkedList<Integer>();
+		/*Queue<Integer> queue=new LinkedList<Integer>();
 		queue.add(1);//D'abord, Il faux ajouter une evenement "job arrive " dans le file d'attente de evenement.
 		
 		
@@ -123,16 +123,20 @@ public class Simulation {
 				
 				break;
 			}
-		}
+		}*/
 		
-		/*for (int i = 0; i < jobManager.listJob.size(); i++) {
+		JobManager jobManager=new JobManager();
+		RessourceManager ressourceManager=new RessourceManager();
+		jobManager.GenererJob(100);
+		ressourceManager.AjouterGrille(4);
+		for (int i = 0; i < jobManager.listJob.size(); i++) {
 			int idGrille = 0;
 			// chercher un grille pour executer le job
 			idGrille = ressourceManager.ordonnacerUnJob(jobManager.listJob.get(i));
 			jobManager.listJob.get(i).setIdGrille(idGrille);
 			//affecter les ressources
 			ressourceManager.affecterUnJob(idGrille, jobManager.listJob.get(i));
-		}*/
+		}
 		System.out.println(ressourceManager.checkCMAXOnGrid());
 	}
 

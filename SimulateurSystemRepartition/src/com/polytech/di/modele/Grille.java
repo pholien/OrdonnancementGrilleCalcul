@@ -2,6 +2,8 @@ package com.polytech.di.modele;
 
 import java.util.ArrayList;
 
+import javax.swing.text.StyledEditorKit.ForegroundAction;
+
 public class Grille {
 	private int idGrille;
 	private int nbMachine;
@@ -48,6 +50,34 @@ public class Grille {
 		}
 		return firstTime;
 
+	}
+	
+	public double calculCharge(int start){
+		int nbProcesseur=0;
+		int nbProcesseurOccup=0;
+		for(int i=0;i<listMachine.size();i++){
+			nbProcesseurOccup+=listMachine.get(i).CPURest.get(start);
+			nbProcesseur+=listMachine.get(i).getNbCPU();
+		}
+		
+		return nbProcesseurOccup/nbProcesseur;
+	}
+	
+	public double calculChargeMoyen(int start,Processus p){
+		int nbProcesseur=0;
+		int nbProcesseurOccup=0;
+		int nbProcesseurOccupTmp;
+		//int nbProcesseurOccupTmp=0;
+		for(int i=0;i<listMachine.size();i++){			
+			nbProcesseurOccupTmp=0;
+			for(int j=0;j<p.getDuree();j++){
+				nbProcesseurOccupTmp+=listMachine.get(i).CPURest.get(start+j);
+			}
+			nbProcesseurOccup+=nbProcesseurOccupTmp/p.getDuree();			
+			nbProcesseur+=listMachine.get(i).getNbCPU();
+		}
+		
+		return nbProcesseurOccup/nbProcesseur;
 	}
 
 	public void affecterRessourceOnGrid(Job job) {

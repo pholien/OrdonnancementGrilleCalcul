@@ -1,6 +1,7 @@
 package com.polytech.di.simulation;
 
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -8,10 +9,10 @@ import com.polytech.di.modele.Job;
 import com.polytech.di.modele.Processus;
 
 public class JobManager {
-	public Queue<Job> queueJob;
+	public ArrayList<Job> listJob;
 	//public Queue<Integer> queue;
 	public JobManager() {
-		queueJob = new LinkedList<Job>();
+		listJob = new ArrayList<Job>();
 		
 	}
 
@@ -19,6 +20,7 @@ public class JobManager {
 
 		for (int i = 0; i < n; i++) {
 			Job job = new Job(i);
+			job.setDebut((int) Math.round(Math.random() * 200));
 			// pour chaque Job, generer 3-5 Map et 1-2 reduce
 			int nbMap = (int) Math.round(Math.random() * 2 + 3);
 			for (int j = 0; j < nbMap; j++) {
@@ -52,7 +54,7 @@ public class JobManager {
 			job.setNbMap(nbMap);
 			job.setNbReduce(nbReduce);
 			//ajouter le job dans la liste 
-			queueJob.add(job);
+			listJob.add(job);
 		}
 		
 

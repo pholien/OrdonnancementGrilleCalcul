@@ -39,11 +39,16 @@ public class RessourceManager {
 	}
 
 	public int ordonnacerUnJob(Job job) {
+		/**
+		 * Entree: un job
+		 * on retourne le numero de la machine qui peut demarrer le job le plus tot
+		 * 
+		 * */
 		int idGrille = 0;
 		int firstTimeGrille = Integer.MAX_VALUE;
 		int tmpFirstTime = 0;
 		for (int i = 0; i < listGrille.size(); i++) {
-			tmpFirstTime = listGrille.get(i).firstStartTimeOnGrid(0, job.listeMap.get(0));
+			tmpFirstTime = listGrille.get(i).firstStartTimeOnGrid(job.getDebut(), job.listeMap.get(0));
 			if (tmpFirstTime < firstTimeGrille) {
 				firstTimeGrille = tmpFirstTime;
 				idGrille = i;
@@ -51,6 +56,42 @@ public class RessourceManager {
 		}
 		return idGrille;
 
+	}
+	
+	public int ordonnancerUnJob_2(Job job){
+		/**
+		 * Entree: un job
+		 * on retourne le numero de la machine qui peut a la moins charge
+		 * 
+		 * */
+		
+		int idGrille=0;
+		double tauxDeCharge=listGrille.get(0).calculCharge(job.getDebut());
+		for(int i=1;i<listGrille.size();i++){
+			if(tauxDeCharge<listGrille.get(i).calculCharge(job.getDebut())){
+				tauxDeCharge=listGrille.get(i).calculCharge(job.getDebut());
+				idGrille=i;
+			}
+		}
+		return idGrille;
+	}
+	
+	public int ordonnancerUnJob_3(Job job){
+		/**
+		 * Entree: un job
+		 * on retourne le numero de la machine qui peut a la moins charge sur le debut de tache
+		 * 
+		 * */
+		int idGrille=0;
+		double tauxDeCharge=listGrille.get(0).calculChargeMoyen(job.getDebut(),job.listeMap.get(0));
+		for(int i=1;i<listGrille.size();i++){
+			if(tauxDeCharge<listGrille.get(i).calculChargeMoyen(job.getDebut(),job.listeMap.get(0))){
+				tauxDeCharge=listGrille.get(i).calculChargeMoyen(job.getDebut(),job.listeMap.get(0));
+				idGrille=i;
+			}
+		}
+		return idGrille;
+		
 	}
 
 	public void affecterUnJob(int idGrille, Job job) {
