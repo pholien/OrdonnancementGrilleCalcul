@@ -23,6 +23,8 @@ public class Node {
 		return CPURest.size();
 	}
 	
+	
+	
 	public int fisrtStartTime(int start, Processus p){
 		int position=CPURest.size();
 		for(int i=start;i<CPURest.size();i++){

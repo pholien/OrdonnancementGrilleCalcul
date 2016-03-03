@@ -16,6 +16,8 @@ public class Grille {
 	public void ajouterNode(Node n) {
 		this.listNode.add(n);
 	}
+	
+	
 
 	public int firstStartTimeOnGrid(int start, Processus p) {
 		int tmpTime;
@@ -30,8 +32,15 @@ public class Grille {
 		return firstTime;
 
 	}
+	
+	
 
 	public void affecterRessourceOnGrid(Job job) {
+		/**
+		 * Entree: un job
+		 * affecter les ressources pour executer le job selon FST
+		 * 
+		 * */
 		int idNode = -1;
 		int firstTimeMachine = Integer.MAX_VALUE;
 		
@@ -81,6 +90,57 @@ public class Grille {
 
 		}
 
+	}
+	
+	public void affecterRessourceOnGrid_charge(Job job){
+		int idNode = -1;
+		int cmax;
+		int cmaxTmp;
+		int start = 0;
+		boolean flag = true;
+		for (int i = 0; i < job.getNbProcessus(); i++) {
+			// trouver le temps plus tot pour executer le processus
+			start = 0;
+			flag = true;
+			
+			int idProcessus = job.listProcessusOrdonne.get(i).getIdProcessus();
+			for (int j = 0; j < idProcessus; j++) {
+				if (job.adjProcessus[j][idProcessus] != 0) {
+					if (flag) {
+						start = job.listProcessus.get(idProcessus).getFin() + 1;
+						idNode = job.listProcessus.get(j).getIdMachine();
+						;
+					}
+					if (!flag && start < job.listProcessus.get(j).getFin() + job.adjProcessus[j][idProcessus]) {
+						start = job.listProcessus.get(j).getFin() + job.adjProcessus[j][idProcessus] + 1;
+						idNode = -1;
+					}
+					flag = false;
+				}
+			}
+			if (idNode != -1) {
+				job.listProcessus.get(idProcessus).setIdMachine(idNode);
+				listNode.get(idNode).affectationRessources(start, job.listProcessus.get(idProcessus));
+			} else {
+				idNode=0;
+				cmax=Integer.MAX_VALUE;
+				for(int j=0;j<nbMachine;j++){
+					cmaxTmp=listNode.get(j).CMAX();
+					if(cmaxTmp<cmax){
+						cmax=cmaxTmp;
+						idNode=j;
+					}
+				}
+				
+				//System.out.println(" test " + i + " idnode " + idNode + " taille " + listNode.size());
+				job.listProcessus.get(idProcessus).setIdMachine(idNode);
+				listNode.get(idNode).affectationRessources(start, job.listProcessus.get(idProcessus));
+			}
+
+			// trouver une machine FAM pour executer processus p
+
+		}
+		
 	}
 
 	public int checkCMax() {

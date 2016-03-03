@@ -50,10 +50,9 @@ public class RM {
 		}
 		return idGrille;
 	}
-	public void affecterUnJob(int idGrille, Job job) {
-		
-		
-		listGrille.get(idGrille).affecterRessourceOnGrid(job);;
+	
+	public void affecterUnJob(int idGrille, Job job) {		
+		listGrille.get(idGrille).affecterRessourceOnGrid(job);
 		
 	}
 	
