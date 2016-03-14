@@ -11,6 +11,10 @@ public class Processus {
 	private int idMachine;
 
 	public Processus(int id, int c, int r, int d, boolean b, int duree) {
+		/**
+		 * constructeur, pour generer un processus, preciser les besoins de ressources de processus
+		 * type de processus(map et reduce) et duree de processus.
+		 * */
 		this.setId(id);
 		this.setNbCPU(c);
 		this.setNbRAM(r);

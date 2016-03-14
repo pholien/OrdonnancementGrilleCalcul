@@ -17,6 +17,11 @@ public class JobManager {
 	}
 
 	public void GenererJob(int n) {
+		/**
+		 * Entree: le nombre de job
+		 * generer les processus (map et reduce) pour chaque job, chaque job a besoin de ressources,
+		 * chaque machine a 1-4 CPU, 1-4G RAM, et 2-5G disque dur
+		 * */
 
 		for (int i = 0; i < n; i++) {
 			Job job = new Job(i);

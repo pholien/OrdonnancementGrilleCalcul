@@ -6,15 +6,25 @@ import java.util.Comparator;
 
 
 public class Job {
+	//identité de job
 	private int idJob;
+	//le job contient combien de map
 	private int nbMap;
+	//le job contient combien de reduce
 	private int nbReduce;
+	//liste de map
 	public ArrayList<Processus> listeMap;
+	//liste de reduce
 	public ArrayList<Processus> listeReduce;
+	//le job s'exécuter sur quelle grille 
 	private int idGrille;
+	//le début de job 
 	private int debut;
 
 	public Job(int id) {
+		/**
+		 * constructeur de classe Job, pour initialiser un Job
+		 * */
 		this.idJob = id;
 		listeMap = new ArrayList<Processus>();
 		listeReduce=new ArrayList<Processus>();
@@ -46,10 +56,7 @@ public class Job {
 	public void setNbReduce(int nbReduce) {
 		this.nbReduce = nbReduce;
 	}
-	public void SortBySPT(){
-		Collections.sort(listeMap,new SPT());
-		Collections.sort(listeReduce,new SPT());
-	}
+
 	public int getIdGrille() {
 		return idGrille;
 	}
@@ -64,19 +71,6 @@ public class Job {
 	public void setDebut(int debut) {
 		this.debut = debut;
 	}
-	class SPT implements Comparator{
 
-		@Override
-		public int compare(Object o1, Object o2) {
-			Processus p1=(Processus)o1;
-			Processus p2=(Processus)o2;
-			if(p1.getDuree()>p2.getDuree())
-				return 1;
-			else
-				return 0;
-			
-		}
-		
-	}
 
 }

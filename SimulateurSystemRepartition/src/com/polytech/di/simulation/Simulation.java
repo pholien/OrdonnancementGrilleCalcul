@@ -97,16 +97,18 @@ public class Simulation {
 		RessourceManager ressourceManager=new RessourceManager();
 		int idGrille=0;
 		Job job=null;
+		int idJobExecute=0;
 		ressourceManager.AjouterGrille(3);
-		while(!queue.isEmpty()){
+		boolean flag=true;
+		while(flag && !queue.isEmpty()){
 			int evenement=queue.poll();
 			switch (evenement) {
 			case 1:
-				jobManager.GenererJob(1);
+				jobManager.GenererJob(100);
 				queue.add(2);
 				break;
 			case 2:
-				job=jobManager.queueJob.poll();
+				job=jobManager.listJob.get(idJobExecute++);
 				queue.add(3);
 				break;
 			case 3:
@@ -116,28 +118,135 @@ public class Simulation {
 				break;
 			case 4:
 				ressourceManager.affecterUnJob(idGrille, job);
-				queue.add(1);
+				queue.add(5);
 				break;	
+			case 5:				
+				if(idJobExecute==jobManager.listJob.size())
+					flag=false;
+				else{
+					queue.add(2);
+				}
+				break;
 
 			default:
 				
 				break;
 			}
-		}*/
-		
-		JobManager jobManager=new JobManager();
-		RessourceManager ressourceManager=new RessourceManager();
-		jobManager.GenererJob(100);
-		ressourceManager.AjouterGrille(4);
-		for (int i = 0; i < jobManager.listJob.size(); i++) {
-			int idGrille = 0;
-			// chercher un grille pour executer le job
-			idGrille = ressourceManager.ordonnacerUnJob(jobManager.listJob.get(i));
-			jobManager.listJob.get(i).setIdGrille(idGrille);
-			//affecter les ressources
-			ressourceManager.affecterUnJob(idGrille, jobManager.listJob.get(i));
 		}
-		System.out.println(ressourceManager.checkCMAXOnGrid());
+		System.out.println(ressourceManager.checkCMAXOnGrid());*/
+		int[][] resultat = new int[20][5];
+		int count = 0;
+		for (int i = 0; i < 20; i++) {
+			for (int j = 0; j < 5; j++) {
+				resultat[i][j] = 0;
+			}
+		}
+
+		while (count < 20) {
+
+			JobManager jobManager = new JobManager();
+			RessourceManager ressourceManager = new RessourceManager();
+			jobManager.GenererJob(100);
+			ressourceManager.AjouterGrille(4);
+			for (int i = 0; i < jobManager.listJob.size(); i++) {
+				int idGrille = 0;
+				// chercher un grille pour executer le job
+				idGrille = ressourceManager.ordonnacerUnJob(jobManager.listJob.get(i));
+				jobManager.listJob.get(i).setIdGrille(idGrille);
+				// affecter les ressources
+				ressourceManager.affecterUnJob(idGrille, jobManager.listJob.get(i));
+			}
+			resultat[count][0] = ressourceManager.checkCMAXOnGrid();
+			System.out.println("FAM: " + ressourceManager.checkCMAXOnGrid());
+
+			for (int i = 0; i < ressourceManager.listGrille.size(); i++) {
+				for (int j = 0; j < ressourceManager.listGrille.get(i).listMachine.size(); j++) {
+					ressourceManager.listGrille.get(i).listMachine.get(j).CPURest.clear();
+					ressourceManager.listGrille.get(i).listMachine.get(j).DDRest.clear();
+					ressourceManager.listGrille.get(i).listMachine.get(j).RAMRest.clear();
+				}
+			}
+
+			for (int i = 0; i < jobManager.listJob.size(); i++) {
+				int idGrille = 0;
+				// chercher un grille pour executer le job
+				idGrille = ressourceManager.ordonnancerUnJob_2(jobManager.listJob.get(i));
+				jobManager.listJob.get(i).setIdGrille(idGrille);
+				// affecter les ressources
+				ressourceManager.affecterUnJob(idGrille, jobManager.listJob.get(i));
+			}
+			resultat[count][1] = ressourceManager.checkCMAXOnGrid();
+			System.out.println("tauxOccupationCPU: " + ressourceManager.checkCMAXOnGrid());
+
+			for (int i = 0; i < ressourceManager.listGrille.size(); i++) {
+				for (int j = 0; j < ressourceManager.listGrille.get(i).listMachine.size(); j++) {
+					ressourceManager.listGrille.get(i).listMachine.get(j).CPURest.clear();
+					ressourceManager.listGrille.get(i).listMachine.get(j).DDRest.clear();
+					ressourceManager.listGrille.get(i).listMachine.get(j).RAMRest.clear();
+				}
+			}
+
+			for (int i = 0; i < jobManager.listJob.size(); i++) {
+				int idGrille = 0;
+				// chercher un grille pour executer le job
+				idGrille = ressourceManager.ordonnacerUnJob_3(jobManager.listJob.get(i));
+				jobManager.listJob.get(i).setIdGrille(idGrille);
+				// affecter les ressources
+				ressourceManager.affecterUnJob(idGrille, jobManager.listJob.get(i));
+			}
+			resultat[count][2] = ressourceManager.checkCMAXOnGrid();
+			System.out.println("tauxOccupationMoyenCPU: " + ressourceManager.checkCMAXOnGrid());
+
+			for (int i = 0; i < ressourceManager.listGrille.size(); i++) {
+				for (int j = 0; j < ressourceManager.listGrille.get(i).listMachine.size(); j++) {
+					ressourceManager.listGrille.get(i).listMachine.get(j).CPURest.clear();
+					ressourceManager.listGrille.get(i).listMachine.get(j).DDRest.clear();
+					ressourceManager.listGrille.get(i).listMachine.get(j).RAMRest.clear();
+				}
+			}
+
+			for (int i = 0; i < jobManager.listJob.size(); i++) {
+				int idGrille = 0;
+				// chercher un grille pour executer le job
+				idGrille = ressourceManager.ordonnancerUnJob_charge(jobManager.listJob.get(i));
+				jobManager.listJob.get(i).setIdGrille(idGrille);
+				// affecter les ressources
+				ressourceManager.affecterUnJob(idGrille, jobManager.listJob.get(i));
+			}
+			resultat[count][3] = ressourceManager.checkCMAXOnGrid();
+			System.out.println("charge: " + ressourceManager.checkCMAXOnGrid());
+
+			for (int i = 0; i < ressourceManager.listGrille.size(); i++) {
+				for (int j = 0; j < ressourceManager.listGrille.get(i).listMachine.size(); j++) {
+					ressourceManager.listGrille.get(i).listMachine.get(j).CPURest.clear();
+					ressourceManager.listGrille.get(i).listMachine.get(j).DDRest.clear();
+					ressourceManager.listGrille.get(i).listMachine.get(j).RAMRest.clear();
+				}
+			}
+
+			for (int i = 0; i < jobManager.listJob.size(); i++) {
+				int idGrille = 0;
+				// chercher un grille pour executer le job
+				idGrille = ressourceManager.ordonnancerUnJob_chargeMoyen(jobManager.listJob.get(i));
+				jobManager.listJob.get(i).setIdGrille(idGrille);
+				// affecter les ressources
+				ressourceManager.affecterUnJob(idGrille, jobManager.listJob.get(i));
+			}
+			resultat[count][4] = ressourceManager.checkCMAXOnGrid();
+			System.out.println("chargeMoyen: " + ressourceManager.checkCMAXOnGrid());
+			count++;
+		}
+		int[] sum = new int[5];
+		for (int i = 0; i < 5; i++)
+			sum[i] = 0;
+		for (int i = 0; i < 20; i++) {
+			for (int j = 0; j < 5; j++) {
+				sum[j] += resultat[i][j];
+			}
+		}
+		for (int i = 0; i < 5; i++)
+			System.out.println((double) sum[i] / 20);
+
 	}
 
 }

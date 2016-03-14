@@ -1,23 +1,25 @@
 package com.polytech.di.simulation;
 
 import java.util.ArrayList;
-import java.util.concurrent.BlockingQueue;
-
 import com.polytech.di.modele.Grille;
 import com.polytech.di.modele.Job;
 import com.polytech.di.modele.Machine;
 
 public class RessourceManager {
 	public ArrayList<Grille> listGrille;
-	//private BlockingQueue<Integer> queue; //file d'attent d'evenement
-	private boolean isRunning =true;
+	
+	private boolean isRunning = true;
+
 	public RessourceManager() {
 		listGrille = new ArrayList<Grille>();
-		
-
 	}
 
 	public void AjouterGrille(int nbGrille) {
+		/**
+		 * Entree: le nombre de grille
+		 * generer les machines sur chaque grille, chaque grille a 5-10 machine
+		 * chaque machine a 2-8 CPU, 2-14G RAM, et 500-1024G disque dur
+		 * */
 		for (int i = 0; i < nbGrille; i++) {
 			// Pour chaque grille, on genere 5_10 machines
 			int nbMachine = (int) Math.round(Math.random() * 5 + 5);
@@ -34,16 +36,17 @@ public class RessourceManager {
 				Machine machine = new Machine(i, c, r, d);
 				grille.listMachine.add(machine);
 			}
+
 			this.listGrille.add(grille);
 		}
 	}
 
 	public int ordonnacerUnJob(Job job) {
 		/**
-		 * Entree: un job
-		 * on retourne le numero de la machine qui peut demarrer le job le plus tot
+		 * Entree: un job on retourne le numero de la machine qui peut demarrer
+		 * le job le plus tot
 		 * 
-		 * */
+		 */
 		int idGrille = 0;
 		int firstTimeGrille = Integer.MAX_VALUE;
 		int tmpFirstTime = 0;
@@ -57,45 +60,101 @@ public class RessourceManager {
 		return idGrille;
 
 	}
-	
-	public int ordonnancerUnJob_2(Job job){
+
+	public int ordonnancerUnJob_2(Job job) {
 		/**
-		 * Entree: un job
-		 * on retourne le numero de la machine qui peut a la moins charge
+		 * Entree: un job on retourne le numero de la grille qui peut a la moins
+		 * taux occupation cpu
 		 * 
-		 * */
-		
-		int idGrille=0;
-		double tauxDeCharge=listGrille.get(0).calculCharge(job.getDebut());
-		for(int i=1;i<listGrille.size();i++){
-			if(tauxDeCharge<listGrille.get(i).calculCharge(job.getDebut())){
-				tauxDeCharge=listGrille.get(i).calculCharge(job.getDebut());
-				idGrille=i;
+		 */
+		int idGrille = 0;
+		double tauxDeCharge = listGrille.get(0).calculCharge(job.getDebut());
+		// System.out.println(tauxDeCharge);
+
+		for (int i = 1; i < listGrille.size(); i++) {
+			// System.out.println(tauxDeCharge+"
+			// listGrille.get(i).calculCharge(0)
+			// "+listGrille.get(i).calculCharge(0));
+			if (tauxDeCharge > listGrille.get(i).calculCharge(job.getDebut())) {
+				tauxDeCharge = listGrille.get(i).calculCharge(job.getDebut());
+				idGrille = i;
 			}
 		}
+		// System.out.println(idGrille);
 		return idGrille;
 	}
-	
-	public int ordonnancerUnJob_3(Job job){
+
+	public int ordonnacerUnJob_3(Job job) {
 		/**
-		 * Entree: un job
-		 * on retourne le numero de la machine qui peut a la moins charge sur le debut de tache
-		 * 
-		 * */
-		int idGrille=0;
-		double tauxDeCharge=listGrille.get(0).calculChargeMoyen(job.getDebut(),job.listeMap.get(0));
-		for(int i=1;i<listGrille.size();i++){
-			if(tauxDeCharge<listGrille.get(i).calculChargeMoyen(job.getDebut(),job.listeMap.get(0))){
-				tauxDeCharge=listGrille.get(i).calculChargeMoyen(job.getDebut(),job.listeMap.get(0));
-				idGrille=i;
+		 * entree: un job retourner un grille qui a le moin de charge
+		 */
+		int idGrille = 0;
+		double tauxDeCharge = listGrille.get(0).calculChargeMoyen(job.getDebut(), job.listeMap.get(0));
+		// System.out.println(tauxDeCharge);
+
+		for (int i = 1; i < listGrille.size(); i++) {
+			// System.out.println(tauxDeCharge+"
+			// listGrille.get(i).calculCharge(0)
+			// "+listGrille.get(i).calculCharge(0));
+			if (tauxDeCharge > listGrille.get(i).calculChargeMoyen(job.getDebut(), job.listeMap.get(0))) {
+				tauxDeCharge = listGrille.get(i).calculChargeMoyen(job.getDebut(), job.listeMap.get(0));
+				idGrille = i;
 			}
 		}
+		// System.out.println(idGrille);
 		return idGrille;
-		
+	}
+
+	public int ordonnancerUnJob_charge(Job job) {
+		/**
+		 * Entree: un job on retourne le numero de la machine qui peut a la
+		 * moins charge sur le debut de tache
+		 * 
+		 */
+		int idGrille = 0;
+		int nbJob = listGrille.get(0).nbJobExecuteOnGrille(job.getDebut());
+
+		for (int i = 1; i < listGrille.size(); i++) {
+			if (nbJob > listGrille.get(i).nbJobExecuteOnGrille(job.getDebut())) {
+				nbJob = listGrille.get(i).nbJobExecuteOnGrille(job.getDebut());
+				idGrille = i;
+			}
+		}
+		// System.out.println("charge: "+idGrille);
+		return idGrille;
+
+	}
+
+	public int ordonnancerUnJob_chargeMoyen(Job job) {
+		/**
+		 * Entree: un job on retourne le numero de la machine qui peut a la
+		 * moins charge sur le debut de tache
+		 * 
+		 */
+		int idGrille = 0;
+		double nbJobMoyen = listGrille.get(0).nbJobMoyenExecuteOnGrille(job.getDebut(), job.listeMap.get(0));
+		// System.out.println(nbJobMoyen);
+		for (int i = 1; i < listGrille.size(); i++) {
+			// System.out.println(nbJobMoyen+" test:
+			// "+listGrille.get(i).nbJobMoyenExecuteOnGrille(job.getDebut(),
+			// job.listeMap.get(0)));
+			if (nbJobMoyen > listGrille.get(i).nbJobMoyenExecuteOnGrille(job.getDebut(), job.listeMap.get(0))) {
+				nbJobMoyen = listGrille.get(i).nbJobMoyenExecuteOnGrille(job.getDebut(), job.listeMap.get(0));
+				idGrille = i;
+			}
+		}
+
+		// System.out.println("moyen:"+idGrille);
+		return idGrille;
+
 	}
 
 	public void affecterUnJob(int idGrille, Job job) {
-		listGrille.get(idGrille).affecterRessourceOnGrid(job);		
+		/**
+		 * Entree: id de Grille et un job
+		 * ordonnancer un job au grille. job s'execute sur cette grille
+		 * */
+		listGrille.get(idGrille).affecterRessourceOnGrid(job);
 	}
 
 	/*
@@ -110,15 +169,18 @@ public class RessourceManager {
 	 * 
 	 * }
 	 */
-	public int checkCMAXOnGrid(){
-		int CMax=0;
-		for(int i=0;i<listGrille.size();i++){
-			if(CMax<listGrille.get(i).checkCMax()){
-				CMax=listGrille.get(i).checkCMax();
+	public int checkCMAXOnGrid() {
+		/** 
+		 * sortie: le Cmax du systeme
+		 * */
+		int CMax = 0;
+		for (int i = 0; i < listGrille.size(); i++) {
+			if (CMax < listGrille.get(i).checkCMax()) {
+				CMax = listGrille.get(i).checkCMax();
 			}
 		}
 		return CMax;
-			
+
 	}
 
 	public boolean isRunning() {
@@ -128,9 +190,5 @@ public class RessourceManager {
 	public void setRunning(boolean isRunning) {
 		this.isRunning = isRunning;
 	}
-
-
-	
-	
 
 }

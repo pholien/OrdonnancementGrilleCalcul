@@ -5,17 +5,23 @@ import java.util.ArrayList;
 import javax.swing.text.StyledEditorKit.ForegroundAction;
 
 public class Grille {
+	//identité de la grille
 	private int idGrille;
+	//nombre de machine dans la grille
 	private int nbMachine;
+	//la liste de machine 
 	public ArrayList<Machine> listMachine;
 
 	public Grille(int id, int nbM) {
+		/**
+		 * constructeur de la classe Grille, pour initialiser un Grille
+		 * */
 		this.setIdGrille(id);
 		this.setNbMachine(nbM);
 		listMachine = new ArrayList<Machine>();
 	}
 
-	public void GenererMachine(int n) {
+/*	public void GenererMachine(int n) {
 
 		for (int i = 0; i < n; i++) {
 			// nombre de CPU est 2-8
@@ -28,7 +34,7 @@ public class Grille {
 			Machine machine = new Machine(i, c, r, d);
 			this.listMachine.add(machine);
 		}
-	}
+	}*/
 
 	public void ajouterMachine(Machine n) {
 		this.listMachine.add(n);
@@ -36,8 +42,9 @@ public class Grille {
 
 	public int firstStartTimeOnGrid(int start, Processus p) {
 		/**
-		 * parametre start est le temps plus tot pour executer le processus p, Nous trouvons la machine qui peut executer 
-		 * le processus p le plus tot.
+		 * Entrée: le temps arrivé de job et un processus 
+		 * sortie: le début exécuté sur cette grille
+		 * calculer le temps plus tôt à exécuter le P
 		 * */
 		int tmpTime;
 		int firstTime = Integer.MAX_VALUE;
@@ -53,32 +60,86 @@ public class Grille {
 	}
 	
 	public double calculCharge(int start){
+		/**
+		 * Entrée: le temps arrivé de job
+		 * sortie: le charge de la grille
+		 * calculer le charge dans le moment de job arrivé.
+		 * */
 		int nbProcesseur=0;
 		int nbProcesseurOccup=0;
-		for(int i=0;i<listMachine.size();i++){
-			nbProcesseurOccup+=listMachine.get(i).CPURest.get(start);
-			nbProcesseur+=listMachine.get(i).getNbCPU();
-		}
 		
-		return nbProcesseurOccup/nbProcesseur;
+		for(int i=0;i<listMachine.size();i++){
+			if(listMachine.get(i).CPURest.size()<=start){
+				nbProcesseur+=listMachine.get(i).getNbCPU();
+			}else{
+				nbProcesseurOccup+=listMachine.get(i).CPURest.get(start);
+				nbProcesseur+=listMachine.get(i).getNbCPU();
+			}
+			
+		}
+		return (double)nbProcesseurOccup/nbProcesseur;
 	}
 	
 	public double calculChargeMoyen(int start,Processus p){
+		/**
+		 * Entrée: le temps arrivé de job et le premier processus de job
+		 * sortie: le charge moyen de la grille
+		 * calculer le charge moyen pendant la durée de premier processus 
+		 * */
 		int nbProcesseur=0;
 		int nbProcesseurOccup=0;
 		int nbProcesseurOccupTmp;
-		//int nbProcesseurOccupTmp=0;
+		
 		for(int i=0;i<listMachine.size();i++){			
 			nbProcesseurOccupTmp=0;
 			for(int j=0;j<p.getDuree();j++){
-				nbProcesseurOccupTmp+=listMachine.get(i).CPURest.get(start+j);
+				if(listMachine.get(i).CPURest.size()>start+j){
+					nbProcesseurOccupTmp+=listMachine.get(i).CPURest.get(start+j);
+				}
+				
 			}
 			nbProcesseurOccup+=nbProcesseurOccupTmp/p.getDuree();			
 			nbProcesseur+=listMachine.get(i).getNbCPU();
 		}
 		
-		return nbProcesseurOccup/nbProcesseur;
+		return (double)nbProcesseurOccup/nbProcesseur;
 	}
+	
+	
+	public int nbJobExecuteOnGrille(int start){
+		/**
+		 * Entrée: le temps arrivé de job
+		 * sortie: le nombre de job
+		 * calculer le nombre de job dans le moment de job arrivé.
+		 * */
+		int nbJob=0;
+		for(int i=0;i<listMachine.size();i++){
+			if(listMachine.get(i).nbJob.size()>start)
+				nbJob+=listMachine.get(i).nbJob.get(start);
+		}
+		return nbJob;
+	}
+	
+	public double nbJobMoyenExecuteOnGrille(int start, Processus p){
+		/**
+		 * Entrée: le temps arrivé de job et le premier processus de job
+		 * sortie: le nombre de job moyen
+		 * calculer nombrede job moyen pendant la durée de premier processus 
+		 * */
+		double nbJob=0;
+		double nbJobMoyen=0;
+		for(int i=0;i<listMachine.size();i++){
+			nbJob=0;
+			for(int j=0;j<p.getDuree();j++){
+				if(listMachine.get(i).nbJob.size()>start+j)
+					nbJob+=listMachine.get(i).nbJob.get(start+j);
+			}
+			nbJobMoyen+=nbJob/p.getDuree();
+		}
+		return nbJobMoyen;
+	}
+	
+	
 
 	public void affecterRessourceOnGrid(Job job) {
 		/**
@@ -132,54 +193,7 @@ public class Grille {
 		}
 	}
 
-	// /*
-	// * public void affecterRessourceOnGrid(Job job) { int idNode = -1; int
-	// * firstTimeMachine = Integer.MAX_VALUE;
-	// *
-	// * int tmpTime; int start = 0; boolean flag = true; for (int i = 0; i <
-	// * job.getNbProcessus(); i++) { // trouver le temps plus tot pour executer
-	// * le processus start = 0; flag = true;
-	// *
-	// * int idProcessus = job.listProcessusOrdonne.get(i).getIdProcessus(); for
-	// * (int j = 0; j < idProcessus; j++) { if
-	// (job.adjProcessus[j][idProcessus]
-	// * != 0) { if (flag) { start = job.listProcessus.get(idProcessus).getFin()
-	// +
-	// * 1; idNode = job.listProcessus.get(j).getIdMachine(); ; } if (!flag &&
-	// * start < job.listProcessus.get(j).getFin() +
-	// * job.adjProcessus[j][idProcessus]) { start =
-	// * job.listProcessus.get(j).getFin() + job.adjProcessus[j][idProcessus] +
-	// 1;
-	// * idNode = -1; } flag = false; } } if (idNode != -1) {
-	// * job.listProcessus.get(idProcessus).setIdMachine(idNode);
-	// * listNode.get(idNode).affectationRessources(start,
-	// * job.listProcessus.get(idProcessus)); } else { idNode=0;
-	// firstTimeMachine=
-	// * Integer.MAX_VALUE; for (int j = 0; j < listNode.size(); j++) { tmpTime
-	// =
-	// * listNode.get(j).fisrtStartTime(start,
-	// * job.listProcessus.get(idProcessus)); if (tmpTime < firstTimeMachine) {
-	// * firstTimeMachine = tmpTime; idNode = j; }
-	// //System.out.println(tmpTime);
-	// * } //System.out.println(" test " + i + " idnode " + idNode + " taille "
-	// +
-	// * listNode.size());
-	// * job.listProcessus.get(idProcessus).setIdMachine(idNode);
-	// * listNode.get(idNode).affectationRessources(start,
-	// * job.listProcessus.get(idProcessus)); }
-	// *
-	// * // trouver une machine FAM pour executer processus p
-	// *
-	// * }
-	// *
-	// * }
-	// *
-	// * public int checkCMax() { int CMax = 0; for (int i = 0; i <
-	// * listNode.size(); i++) { if (CMax < listNode.get(i).CMAX()) { CMax =
-	// * listNode.get(i).CMAX(); } } return CMax;
-	// *
-	// * }
-	// */
+	
 
 	public int getIdGrille() {
 		return idGrille;
