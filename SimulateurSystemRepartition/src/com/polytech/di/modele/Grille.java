@@ -2,7 +2,6 @@ package com.polytech.di.modele;
 
 import java.util.ArrayList;
 
-import javax.swing.text.StyledEditorKit.ForegroundAction;
 
 public class Grille {
 	//identité de la grille

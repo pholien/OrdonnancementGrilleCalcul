@@ -2,8 +2,7 @@ package com.polytech.di.simulation;
 
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
+
 
 import com.polytech.di.modele.Job;
 import com.polytech.di.modele.Processus;

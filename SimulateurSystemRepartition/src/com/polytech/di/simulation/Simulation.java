@@ -1,83 +1,6 @@
 package com.polytech.di.simulation;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
-import com.polytech.di.modele.Job;
-import com.polytech.di.modele.Processus;
-
 public class Simulation {
-	/*private JobManager jobManager;
-	private RessourceManager ressourceManager;
-
-	public Simulation() {
-		jobManager = new JobManager();
-		ressourceManager = new RessourceManager();
-	}*/
-
-	/*public void Ordonnacement() {
-		int nbJob = 10;
-		int nbMachine = 4;
-		jobManager.GenererJob(nbJob);
-		System.out.println(jobManager.listJob.size());
-		for (int i = 0; i < nbJob; i++) {
-			System.out.println("nombre de map est " + jobManager.listJob.get(i).getNbMap());
-			System.out.println("nombre de reduce est " + jobManager.listJob.get(i).getNbReduce());
-
-		}
-		ressourceManager.AjouterMachine(nbMachine);
-		System.out.println(ressourceManager.listMachine.size());
-		for (int i = 0; i < nbMachine; i++) {
-			System.out.println("nombre de map est " + ressourceManager.listMachine.get(i).toString());
-
-		}
-
-		for (int i = 0; i < nbJob; i++) {
-			// Nous allons la liste de Jobs, traiter par FIFO
-			jobManager.listJob.get(i).SortBySPT();
-			for (int j = 0; j < jobManager.listJob.get(i).listeMap.size(); j++) {
-				// chaque Job a certain de processus.
-				Processus p = jobManager.listJob.get(i).listeMap.get(j);
-				int idMachine = ressourceManager.FirstStartTimeMachine(0,p);
-				System.out.println(jobManager.listJob.get(i).getIdJob() + " " + p.getId() + " est deplace sur Machine "
-						+ " " + idMachine);
-				ressourceManager.affectation(0,p, ressourceManager.listMachine.get(idMachine));
-
-			}
-			int finMap = 0; // la fin d'executer les Maps
-
-			for (int j = 0; j < nbMachine; j++) {
-				int tmpFinMap = ressourceManager.listMachine.get(j).CPURest.size();
-				if (tmpFinMap > finMap) {
-					finMap = tmpFinMap;
-				}
-			}
-			for (int j = 0; j < jobManager.listJob.get(i).listeReduce.size(); j++) {
-				// chaque Job a certain de processus.
-				Processus p = jobManager.listJob.get(i).listeReduce.get(j);
-				int idMachine = ressourceManager.FirstStartTimeMachine(0,p);
-				System.out.println(jobManager.listJob.get(i).getIdJob() + " " + p.getId() + " est deplace sur Machine "
-						+ " " + idMachine);
-				ressourceManager.affectation(finMap+1,p, ressourceManager.listMachine.get(idMachine));
-
-			}
-			
-			
-			
-		}
-		int Cmax = 0;
-
-		for (int i = 0; i < nbMachine; i++) {
-			int tmpCmax = ressourceManager.listMachine.get(i).CPURest.size();
-			if (tmpCmax > Cmax) {
-				Cmax = tmpCmax;
-			}
-
-		}
-		System.out.println(Cmax);
-
-	}*/
-
 	public static void main(String[] args) {
 		/**
 		 * Dans le fonction Main, Nous definissons AM et RM, les deux gardent une file d'attent d'evenement,
@@ -143,11 +66,13 @@ public class Simulation {
 		}
 
 		while (count < 20) {
-
+			System.out.println("Le "+(count+1)+" fois!"); 
 			JobManager jobManager = new JobManager();
 			RessourceManager ressourceManager = new RessourceManager();
 			jobManager.GenererJob(100);
 			ressourceManager.AjouterGrille(4);
+			
+			//FAM
 			for (int i = 0; i < jobManager.listJob.size(); i++) {
 				int idGrille = 0;
 				// chercher un grille pour executer le job
@@ -158,7 +83,7 @@ public class Simulation {
 			}
 			resultat[count][0] = ressourceManager.checkCMAXOnGrid();
 			System.out.println("FAM: " + ressourceManager.checkCMAXOnGrid());
-
+			//CHARGE
 			for (int i = 0; i < ressourceManager.listGrille.size(); i++) {
 				for (int j = 0; j < ressourceManager.listGrille.get(i).listMachine.size(); j++) {
 					ressourceManager.listGrille.get(i).listMachine.get(j).CPURest.clear();
@@ -166,7 +91,7 @@ public class Simulation {
 					ressourceManager.listGrille.get(i).listMachine.get(j).RAMRest.clear();
 				}
 			}
-
+			
 			for (int i = 0; i < jobManager.listJob.size(); i++) {
 				int idGrille = 0;
 				// chercher un grille pour executer le job
@@ -177,7 +102,7 @@ public class Simulation {
 			}
 			resultat[count][1] = ressourceManager.checkCMAXOnGrid();
 			System.out.println("tauxOccupationCPU: " + ressourceManager.checkCMAXOnGrid());
-
+			//CHARGEMOYEN
 			for (int i = 0; i < ressourceManager.listGrille.size(); i++) {
 				for (int j = 0; j < ressourceManager.listGrille.get(i).listMachine.size(); j++) {
 					ressourceManager.listGrille.get(i).listMachine.get(j).CPURest.clear();
@@ -196,7 +121,7 @@ public class Simulation {
 			}
 			resultat[count][2] = ressourceManager.checkCMAXOnGrid();
 			System.out.println("tauxOccupationMoyenCPU: " + ressourceManager.checkCMAXOnGrid());
-
+			//NBJOB
 			for (int i = 0; i < ressourceManager.listGrille.size(); i++) {
 				for (int j = 0; j < ressourceManager.listGrille.get(i).listMachine.size(); j++) {
 					ressourceManager.listGrille.get(i).listMachine.get(j).CPURest.clear();
@@ -215,7 +140,7 @@ public class Simulation {
 			}
 			resultat[count][3] = ressourceManager.checkCMAXOnGrid();
 			System.out.println("charge: " + ressourceManager.checkCMAXOnGrid());
-
+			//NBJOBMOYEN
 			for (int i = 0; i < ressourceManager.listGrille.size(); i++) {
 				for (int j = 0; j < ressourceManager.listGrille.get(i).listMachine.size(); j++) {
 					ressourceManager.listGrille.get(i).listMachine.get(j).CPURest.clear();
@@ -236,6 +161,7 @@ public class Simulation {
 			System.out.println("chargeMoyen: " + ressourceManager.checkCMAXOnGrid());
 			count++;
 		}
+		//compter les moyen 
 		int[] sum = new int[5];
 		for (int i = 0; i < 5; i++)
 			sum[i] = 0;
@@ -244,8 +170,12 @@ public class Simulation {
 				sum[j] += resultat[i][j];
 			}
 		}
-		for (int i = 0; i < 5; i++)
-			System.out.println((double) sum[i] / 20);
+		//Sortir les infos
+		System.out.println("Cmax FAM: "+(double) sum[0] / 20);
+		System.out.println("Cmax charge: "+(double) sum[1] / 20);
+		System.out.println("Cmax chargeMoyen: "+(double) sum[2] / 20);
+		System.out.println("Cmax NbJob: "+(double) sum[3] / 20);
+		System.out.println("Cmax NbJobMoyen: "+(double) sum[4] / 20);
 
 	}
 
