@@ -57,19 +57,23 @@ public class Simulation {
 			}
 		}
 		System.out.println(ressourceManager.checkCMAXOnGrid());*/
-		int[][] resultat = new int[20][5];
+		int[][] resultat = new int[100][5];
 		int count = 0;
-		for (int i = 0; i < 20; i++) {
+		int nombreJob=900;
+		for (int i = 0; i < 100; i++) {
 			for (int j = 0; j < 5; j++) {
 				resultat[i][j] = 0;
 			}
 		}
-
-		while (count < 20) {
-			System.out.println("Le "+(count+1)+" fois!"); 
+		
+		/**
+		 * Executer 100 fois des politiques, nous calculons le moyen
+		 * */
+		while (count < 100) {
+			//System.out.println("Le "+(count+1)+" fois!"); 
 			JobManager jobManager = new JobManager();
 			RessourceManager ressourceManager = new RessourceManager();
-			jobManager.GenererJob(100);
+			jobManager.GenererJob(nombreJob);
 			ressourceManager.AjouterGrille(4);
 			
 			//FAM
@@ -82,7 +86,7 @@ public class Simulation {
 				ressourceManager.affecterUnJob(idGrille, jobManager.listJob.get(i));
 			}
 			resultat[count][0] = ressourceManager.checkCMAXOnGrid();
-			System.out.println("FAM: " + ressourceManager.checkCMAXOnGrid());
+			//System.out.println("FAM: " + ressourceManager.checkCMAXOnGrid());
 			//CHARGE
 			for (int i = 0; i < ressourceManager.listGrille.size(); i++) {
 				for (int j = 0; j < ressourceManager.listGrille.get(i).listMachine.size(); j++) {
@@ -101,7 +105,7 @@ public class Simulation {
 				ressourceManager.affecterUnJob(idGrille, jobManager.listJob.get(i));
 			}
 			resultat[count][1] = ressourceManager.checkCMAXOnGrid();
-			System.out.println("tauxOccupationCPU: " + ressourceManager.checkCMAXOnGrid());
+			//System.out.println("tauxOccupationCPU: " + ressourceManager.checkCMAXOnGrid());
 			//CHARGEMOYEN
 			for (int i = 0; i < ressourceManager.listGrille.size(); i++) {
 				for (int j = 0; j < ressourceManager.listGrille.get(i).listMachine.size(); j++) {
@@ -120,7 +124,7 @@ public class Simulation {
 				ressourceManager.affecterUnJob(idGrille, jobManager.listJob.get(i));
 			}
 			resultat[count][2] = ressourceManager.checkCMAXOnGrid();
-			System.out.println("tauxOccupationMoyenCPU: " + ressourceManager.checkCMAXOnGrid());
+			//System.out.println("tauxOccupationMoyenCPU: " + ressourceManager.checkCMAXOnGrid());
 			//NBJOB
 			for (int i = 0; i < ressourceManager.listGrille.size(); i++) {
 				for (int j = 0; j < ressourceManager.listGrille.get(i).listMachine.size(); j++) {
@@ -139,7 +143,7 @@ public class Simulation {
 				ressourceManager.affecterUnJob(idGrille, jobManager.listJob.get(i));
 			}
 			resultat[count][3] = ressourceManager.checkCMAXOnGrid();
-			System.out.println("charge: " + ressourceManager.checkCMAXOnGrid());
+			//System.out.println("charge: " + ressourceManager.checkCMAXOnGrid());
 			//NBJOBMOYEN
 			for (int i = 0; i < ressourceManager.listGrille.size(); i++) {
 				for (int j = 0; j < ressourceManager.listGrille.get(i).listMachine.size(); j++) {
@@ -158,24 +162,25 @@ public class Simulation {
 				ressourceManager.affecterUnJob(idGrille, jobManager.listJob.get(i));
 			}
 			resultat[count][4] = ressourceManager.checkCMAXOnGrid();
-			System.out.println("chargeMoyen: " + ressourceManager.checkCMAXOnGrid());
+			//System.out.println("chargeMoyen: " + ressourceManager.checkCMAXOnGrid());
 			count++;
 		}
 		//compter les moyen 
 		int[] sum = new int[5];
 		for (int i = 0; i < 5; i++)
 			sum[i] = 0;
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 100; i++) {
 			for (int j = 0; j < 5; j++) {
 				sum[j] += resultat[i][j];
 			}
 		}
 		//Sortir les infos
-		System.out.println("Cmax FAM: "+(double) sum[0] / 20);
-		System.out.println("Cmax charge: "+(double) sum[1] / 20);
-		System.out.println("Cmax chargeMoyen: "+(double) sum[2] / 20);
-		System.out.println("Cmax NbJob: "+(double) sum[3] / 20);
-		System.out.println("Cmax NbJobMoyen: "+(double) sum[4] / 20);
+		System.out.println("----------Resultat--------");
+		System.out.println("Cmax FAM: "+(double) sum[0] / 100);
+		System.out.println("Cmax charge: "+(double) sum[1] / 100);
+		System.out.println("Cmax chargeMoyen: "+(double) sum[2] / 100);
+		//System.out.println("Cmax NbJob: "+(double) sum[3] / 100);
+		//System.out.println("Cmax NbJobMoyen: "+(double) sum[4] / 100);
 
 	}
 
